@@ -77,6 +77,7 @@
 #if LWIP_TCP_TIMESTAMPS
 #include "lwip/sys.h"
 #endif
+#include "lwip/logging.h"
 
 #include <string.h>
 
@@ -1245,6 +1246,8 @@ tcp_output(struct tcp_pcb *pcb)
   s16_t i = 0;
 #endif /* TCP_CWND_DEBUG */
 
+  LOG_DEBUG("tcp_output: 1, enter\n");
+
   LWIP_ASSERT_CORE_LOCKED();
 
   LWIP_ASSERT("tcp_output: invalid pcb", pcb != NULL);
@@ -1257,6 +1260,7 @@ tcp_output(struct tcp_pcb *pcb)
      input processing code to call us when input processing is done
      with. */
   if (tcp_input_pcb == pcb) {
+    LOG_DEBUG("tcp_output: 2, end\n");
     return ERR_OK;
   }
 
@@ -1417,6 +1421,8 @@ tcp_output(struct tcp_pcb *pcb)
 
 output_done:
   tcp_clear_flags(pcb, TF_NAGLEMEMERR);
+
+  LOG_DEBUG("tcp_output: 3, end\n");
   return ERR_OK;
 }
 

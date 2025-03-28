@@ -56,6 +56,7 @@
 #include "lwip/autoip.h"
 #include "lwip/stats.h"
 #include "lwip/prot/iana.h"
+#include "lwip/logging.h"
 
 #include <string.h>
 
@@ -436,6 +437,8 @@ ip4_input(struct pbuf *p, struct netif *inp)
   raw_input_state_t raw_status;
 #endif /* LWIP_RAW */
 
+  LOG_DEBUG("ip4_input: 1\n");
+
   LWIP_ASSERT_CORE_LOCKED();
 
   IP_STATS_INC(ip.recv);
@@ -755,6 +758,7 @@ ip4_input(struct pbuf *p, struct netif *inp)
   ip4_addr_set_any(ip4_current_src_addr());
   ip4_addr_set_any(ip4_current_dest_addr());
 
+  LOG_DEBUG("ip4_input: 2, end\n");
   return ERR_OK;
 }
 
@@ -1029,6 +1033,7 @@ ip4_output(struct pbuf *p, const ip4_addr_t *src, const ip4_addr_t *dest,
            u8_t ttl, u8_t tos, u8_t proto)
 {
   struct netif *netif;
+  LOG_DEBUG("ip4_output\n");
 
   LWIP_IP_CHECK_PBUF_REF_COUNT_FOR_TX(p);
 

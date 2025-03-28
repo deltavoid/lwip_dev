@@ -48,6 +48,7 @@
 #include "lwip/etharp.h"
 #include "lwip/ip.h"
 #include "lwip/snmp.h"
+#include "lwip/logging.h"
 
 #include <string.h>
 
@@ -85,6 +86,8 @@ ethernet_input(struct pbuf *p, struct netif *netif)
 #if LWIP_ARP || ETHARP_SUPPORT_VLAN || LWIP_IPV6
   u16_t next_hdr_offset = SIZEOF_ETH_HDR;
 #endif /* LWIP_ARP || ETHARP_SUPPORT_VLAN */
+
+  LOG_DEBUG("ethernet_input: 1\n");
 
   LWIP_ASSERT_CORE_LOCKED();
 
@@ -245,10 +248,13 @@ ethernet_input(struct pbuf *p, struct netif *netif)
 
   /* This means the pbuf is freed or consumed,
      so the caller doesn't have to free it again */
+  LOG_DEBUG("ethernet_input: 2, end\n");
+
   return ERR_OK;
 
 free_and_return:
   pbuf_free(p);
+  LOG_DEBUG("ethernet_input: 3, end\n");
   return ERR_OK;
 }
 
